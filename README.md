@@ -7,7 +7,7 @@
 - Aryan Rai [530362258] - Project coordination, data integration, geospatial analysis
 - Nixie Nassar - Evaluation, validation, and documentation
 - Nell Nesci [540701579] - Data preprocessing and exploratory analysis
-- [Charlie Cassell] - TBD
+- Charlie Cassell - TBD
 
 ## Project Overview
 
