@@ -175,6 +175,19 @@ def main():
     print(f"Combining data from {len(all_data)} suburbs...")
     combined_df = pd.concat(all_data, ignore_index=True)
     
+    print(f"  Before deduplication: {len(combined_df):,} records")
+    
+    # Remove duplicates (same suburb + date)
+    # Keep the row with most non-null values
+    combined_df = combined_df.sort_values(
+        ['suburb', 'date'] + list(FILE_MAPPING.values()),
+        na_position='last'
+    )
+    combined_df = combined_df.drop_duplicates(subset=['suburb', 'date'], keep='first')
+    
+    print(f"  After deduplication: {len(combined_df):,} records")
+    print(f"  Removed {len(pd.concat(all_data, ignore_index=True)) - len(combined_df):,} duplicate records")
+    
     # Sort by suburb and date
     combined_df = combined_df.sort_values(['suburb', 'date'])
     
@@ -182,7 +195,7 @@ def main():
     data_cols = list(FILE_MAPPING.values())
     combined_df = combined_df.dropna(subset=data_cols, how='all')
     
-    print(f"✓ Combined {len(combined_df):,} total records")
+    print(f"✓ Final dataset: {len(combined_df):,} unique records")
     
     # Save to CSV
     print(f"\n{'='*80}")
