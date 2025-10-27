@@ -1,17 +1,17 @@
 # ClearRoads: Traffic Congestion Prediction with Hybrid Location Features
 
 **ENGG2112 Multidisciplinary Engineering Project**  
-**University of Newcastle | 2025**
+**The University of Sydney | 2025**
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: Academic](https://img.shields.io/badge/license-Academic-green.svg)](LICENSE)
 [![Status: Complete](https://img.shields.io/badge/status-Complete-success.svg)](README.md)
 
 ## Team Members
-- **Aryan Rai** - Project coordination, data integration, model development
-- **Nixie Nassar** - Evaluation, validation, and documentation
-- **Nell Nesci** - Data preprocessing and feature engineering
-- **Charlie Cassell** - Stuff 
+- **Aryan Rai** - Project Lead, Model Development, Data Integration, Docs, and Dataset finding
+- **Nixie Nassar** - Preprocessing, Documentation and Data Integration
+- **Nell Nesci** - Proposal
+- **Charlie Cassell** - Preprocessing, Documentation and Data Integration
 
 ## 🎯 Project Overview
 
@@ -434,7 +434,7 @@ xgboost >= 1.7.0
 
 ### Course Information
 - **Course:** ENGG2112 - Multidisciplinary Engineering Project
-- **Institution:** University of Newcastle
+- **Institution:** University of Sydney
 - **Year:** 2025
 - **Project Type:** Machine Learning for Traffic Prediction
 
@@ -464,20 +464,21 @@ xgboost >= 1.7.0
 
 ## 📄 License
 
-This project is developed for academic purposes as part of ENGG2112 at the University of Newcastle.
+This project is developed for academic purposes as part of ENGG2112 at the University of Sydney.
 
-**Copyright © 2025 Aryan Rai, Nixie Nassar, Nell Nesci**
+**Copyright © 2025 Aryan Rai, Nixie Nassar, Nell Nesci, Charlie Cassell**
 
 ## 👥 Contact
 
 **Project Team:**
-- Aryan Rai - Project Lead & Model Development
-- Nixie Nassar - Evaluation & Documentation
-- Nell Nesci - Data Engineering & Feature Development
+- Aryan Rai - Project Lead, Model Development, Data Integration, Docs, and Dataset finding
+- Nixie Nassar - Preprocessing, Documentation and Data Integration
+- Nell Nesci - Proposal
+- Charlie Cassell - Preprocessing, Documentation and Data Integration
 
 **Course Information:**
 - Course: ENGG2112 - Multidisciplinary Engineering Project
-- Institution: University of Newcastle
+- Institution: University of Sydney
 - Semester: 2025
 
 ## 🙏 Acknowledgments
@@ -485,7 +486,7 @@ This project is developed for academic purposes as part of ENGG2112 at the Unive
 - Transport for NSW for traffic data
 - NSW EPA for air quality data
 - Bureau of Meteorology for weather data
-- University of Newcastle ENGG2112 teaching team
+- University of Sydney ENGG2112 teaching team
 
 ---
 
