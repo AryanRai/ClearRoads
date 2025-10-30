@@ -49,11 +49,14 @@ datasets/**/*.zip
 # Keep specific small files
 !requirements.txt
 
-# Output files
-*.png
+# Output files (excluding report visualizations)
 *.jpg
 *.jpeg
 *.pdf
+
+# Allow report visualization PNGs
+!*_v2.png
+!report_*.png
 
 # OS
 .DS_Store

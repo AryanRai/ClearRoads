@@ -217,6 +217,9 @@ Each model was embedded in a scikit-learn Pipeline with:
 
 ### 4.1 Model Performance Comparison
 
+![Model Performance Comparison](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/report_model_comparison.png)
+*Figure 1: Test accuracy and cross-validation stability comparison across five models*
+
 All five models substantially outperformed the 25% baseline, with ensemble methods (Random Forest, XGBoost) achieving the highest accuracy:
 
 | Model | CV Accuracy | Test Accuracy | Improvement vs Baseline |
@@ -252,12 +255,22 @@ All five models substantially outperformed the 25% baseline, with ensemble metho
 - Balanced support across classes (16,356–16,357) confirms stratified sampling effectiveness
 
 **Confusion Matrix Insights:**
-The confusion matrix (see `confusion_matrices_v2.png`) revealed:
+
+![Confusion Matrices](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/confusion_matrices_v2.png)
+*Figure 2: Confusion matrices for all five models showing prediction accuracy across congestion classes*
+
+The confusion matrix analysis revealed:
 - Strong diagonal dominance (>97% correct predictions for each class)
 - Minimal off-diagonal errors, mostly between adjacent classes (e.g., Low ↔ High)
 - No systematic bias toward over- or under-prediction
 
 ### 4.3 Feature Importance Analysis
+
+![XGBoost Feature Importance](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/feature_importance_xgboost_v2.png)
+*Figure 3: Top 20 features ranked by XGBoost importance*
+
+![Random Forest Feature Importance](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/feature_importance_random_forest_v2.png)
+*Figure 4: Top 20 features ranked by Random Forest importance*
 
 **XGBoost Top 15 Features:**
 
@@ -280,6 +293,10 @@ The confusion matrix (see `confusion_matrices_v2.png`) revealed:
 | 15 | season_Winter | 0.0035 | Temporal |
 
 **Feature Category Importance (XGBoost):**
+
+![Location Feature Impact](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/report_location_feature_impact.png)
+*Figure 5: Feature category importance breakdown and location feature contributions*
+
 - **Traffic Patterns:** 85.8% (peak_hour_traffic, evening_rush, morning_rush)
 - **Location Features:** 7.6% (urban type, distance to CBD, regional grouping)
 - **Temporal Features:** 4.9% (day of week, season, holidays, year)
@@ -301,6 +318,18 @@ The confusion matrix (see `confusion_matrices_v2.png`) revealed:
 5. **Urban classification** captures important spatial heterogeneity, with Suburban areas showing distinct patterns
 
 ### 4.4 Visualization Outputs
+
+![Traffic Patterns Analysis](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/report_traffic_patterns_analysis.png)
+*Figure 6: Regional traffic analysis, distance to CBD effects, seasonal patterns, and weekday vs weekend comparison*
+
+![Environmental Correlations](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/report_environmental_correlations.png)
+*Figure 7: Environmental factors (PM2.5, PM10, NO₂, rainfall, temperature) by congestion level*
+
+![Congestion Class Distribution](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/congestion_class_distribution_v2.png)
+*Figure 8: Balanced distribution across four congestion classes*
+
+![Performance Metrics Table](https://raw.githubusercontent.com/AryanRai/ClearRoads/main/report_performance_metrics_table.png)
+*Figure 9: Comprehensive model performance comparison table*
 
 Nine high-quality visualizations were generated to support analysis and reporting:
 
