@@ -34,6 +34,21 @@ The system demonstrates strong practical applicability for transport authorities
 7. Potential for Wider Adoption  
 8. Conclusions  
 9. References  
+10. Appendices
+
+---
+
+## List of Figures
+
+1. Model Performance Comparison
+2. Confusion Matrices for All Models
+3. XGBoost Feature Importance
+4. Random Forest Feature Importance
+5. Location Feature Impact Analysis
+6. Traffic Patterns Analysis
+7. Environmental Correlations
+8. Congestion Class Distribution
+9. Performance Metrics Table
 
 ---
 ## 1. Background and Motivation  
