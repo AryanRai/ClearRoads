@@ -1,0 +1,236 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{longtable}
+
+\setstretch{1.2}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+
+\begin{document}
+
+\begin{center}
+    \Huge \textbf{Project Report for ENGG2112} \\[0.3cm]
+    \Large \textbf{ClearRoads: Predicting Traffic Congestion Through Environmental Intelligence} \\[1em]
+    \normalsize
+    \textbf{Aryan Rai}, 530362258, \textit{Mechatronic Engineering} \\
+    \textbf{Charlie Cassell}, 530585684, \textit{Software Engineering} \\
+    \textbf{Nixie Nassar}, 530500300, \textit{Biomedical Engineering} \\
+    \textbf{Faculty of Engineering, The University of Sydney} \\
+    \textbf{Date:} October 29, 2025
+\end{center}
+
+\hrule
+\vspace{1em}
+
+\section*{Executive Summary}
+
+This project developed a machine learning system to predict traffic congestion in NSW by integrating environmental data with historical traffic patterns. Using 3.9 million traffic records merged with NSW EPA air quality and Bureau of Meteorology weather data, we trained five classification models to predict congestion across four balanced categories (Very Low, Low, High, Very High).
+
+The XGBoost model achieved 98.30\% test accuracy, representing a 73.30\% improvement over the 25\% baseline. Feature importance analysis revealed traffic patterns dominated predictions (85.8\%), followed by location features (7.6\%), temporal factors (4.9\%), air quality (0.9\%), and weather (0.8\%). The system demonstrates strong practical applicability for transport authorities, public health agencies, and urban planners.
+
+\section{Background and Motivation}
+
+Rapid urbanisation and climate change have amplified traffic congestion and degraded air quality across NSW. Traffic and environmental factors interact in a feedback loop: vehicular flow increases NO₂, CO and particulates, while deteriorating air quality and adverse weather modify driver behaviour and network capacity (Zhang et al., 2024; Smith et al., 2024). Existing congestion-prediction systems predominantly use historical traffic volumes and basic meteorological variables; multi-pollutant air-quality integration remains uncommon.
+
+This project fuses NSW Roads traffic counts (2011–2025), NSW EPA air-quality records (2008–2025), and Bureau of Meteorology observations (1862–2025) to predict congestion under environmental stressors. 
+
+Our final dataset contained 327,127 records (8.3\% of 3.9M initial records) with complete traffic, environmental, and location information across six NSW regions.
+
+\section{Objectives and Problem Statement}
+
+\textbf{Problem:} Predict traffic congestion class given historical traffic volumes and environmental observations (PM2.5, PM10, NO₂, CO, rainfall, temperature, solar radiation) using integrated traffic and environmental data sources.
+
+\subsection*{Congestion Classes (balanced quartiles)}
+\begin{itemize}
+    \item Very Low: $<$ 1,334 vehicles/day
+    \item Low: 1,334–8,473
+    \item High: 8,473–21,639
+    \item Very High: $>$ 21,639
+\end{itemize}
+
+\subsection*{Objectives}
+\begin{enumerate}
+    \item Integrate traffic, air-quality, and weather data with geospatial matching.
+    \item Engineer features: composite AQI, traffic patterns, location characteristics, temporal indicators.
+    \item Train and compare 5 ML models using 5-fold cross-validation.
+    \item Quantify feature importance across categories.
+\end{enumerate}
+
+\section{Methodology}
+
+\subsection{Data Integration}
+Sources: NSW Roads traffic (hourly), NSW EPA air quality (daily), BOM weather (daily)
+
+Processing steps:
+\begin{itemize}
+    \item Spatial matching at suburb level using standardized names.
+    \item Temporal alignment: hourly traffic aggregated to daily totals.
+    \item Imputation: suburb-specific medians for environmental features.
+    \item Outlier removal: 1st–99th percentile filtering (6,668 records removed).
+    \item Final: 327,127 records with 52 features.
+\end{itemize}
+
+\subsection{Feature Engineering}
+Traffic Patterns: morning\_rush (6–9am), evening\_rush (4–7pm), peak\_hour\_traffic (daily max)
+
+Air Quality: PM10, PM2.5, NO₂, NO, CO, and composite AQI (weighted)
+
+Location: 6 NSW regions + distance to CBD + urban classification (Urban/Suburban/Regional City)
+
+Temporal: season, is\_weekend, year, month, day\_of\_week, public\_holiday, school\_holiday
+
+Final: 31 features after one-hot encoding.
+
+\subsection{Classification Models}
+Five models were tested:
+\begin{enumerate}
+    \item kNN (k=5)
+    \item Decision Tree (depth=10)
+    \item Random Forest (100 trees, depth=15)
+    \item Neural Network (100–50 hidden units)
+    \item XGBoost (100 trees, depth=6, lr=0.1)
+\end{enumerate}
+
+Validation used an 80–20 split and 5-fold CV.
+
+\section{Results}
+
+\subsection{Model Performance}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{report_model_comparison.png}
+    \caption{Model Performance Comparison}
+\end{figure}
+
+\begin{tabular}{lccc}
+\toprule
+Model & CV Accuracy & Test Accuracy & vs Baseline \\
+\midrule
+kNN & 84.97\% ± 0.15\% & 87.13\% & +62.13\% \\
+Decision Tree & 97.14\% ± 0.09\% & 97.17\% & +72.17\% \\
+Random Forest & 98.09\% ± 0.05\% & 98.09\% & +73.09\% \\
+Neural Network & 97.50\% ± 0.13\% & 97.91\% & +72.91\% \\
+\textbf{XGBoost} & \textbf{98.26\% ± 0.04\%} & \textbf{98.30\%} & \textbf{+73.30\%} \\
+\bottomrule
+\end{tabular}
+
+\subsection{XGBoost Performance Analysis}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{confusion_matrices_v2.png}
+    \caption{Confusion matrices for all models}
+\end{figure}
+
+\begin{tabular}{lccc}
+\toprule
+Class & Precision & Recall & F1-Score \\
+\midrule
+Very Low & 0.9924 & 0.9922 & 0.9923 \\
+Low & 0.9800 & 0.9782 & 0.9791 \\
+High & 0.9749 & 0.9726 & 0.9737 \\
+Very High & 0.9849 & 0.9892 & 0.9870 \\
+\bottomrule
+\end{tabular}
+
+\subsection{Feature Importance}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{feature_importance_xgboost_v2.png}
+    \caption{Top 20 features (XGBoost)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{report_location_feature_impact.png}
+    \caption{Feature category breakdown}
+\end{figure}
+
+\subsection{Additional Visualizations}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{report_traffic_patterns_analysis.png}
+    \caption{Regional traffic, distance effects, seasonal patterns}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{report_environmental_correlations.png}
+    \caption{Environmental factors by congestion level}
+\end{figure}
+
+\section{Key Findings}
+\begin{enumerate}
+    \item XGBoost achieved 98.30\% accuracy, surpassing literature benchmarks.
+    \item Traffic patterns dominated predictions (86\%).
+    \item Location features contributed 7.6\% predictive power.
+    \item Air quality and weather had minor direct impacts (1.7\% total).
+    \item All classes had F1-scores above 97\%.
+\end{enumerate}
+
+\section{Issues Faced and Solutions}
+
+\begin{longtable}{p{4cm}p{6cm}p{4cm}}
+\toprule
+\textbf{Issue} & \textbf{Solution} & \textbf{Impact} \\
+\midrule
+Spatial mismatch & Suburb-level fuzzy matching & 8.5\% data retained \\
+Temporal mismatch & Daily aggregation of hourly data & Lost intra-day detail \\
+Missing data & Median imputation per suburb & Stable CV (std $<$ 0.15\%) \\
+Large dataset & Parallel processing & 15-min total runtime \\
+Interpretability vs performance & Used Decision Tree alongside XGBoost & Trade-off: 1.13\% accuracy \\
+\bottomrule
+\end{longtable}
+
+\section{Potential for Wider Adoption}
+\begin{itemize}
+    \item Real-time congestion forecasting API
+    \item Public health dashboards
+    \item Urban planning and infrastructure tools
+    \item Commercial fleet optimization
+\end{itemize}
+
+\section{Conclusions}
+
+XGBoost achieved 98.30\% accuracy integrating traffic, environmental, and location data. The ClearRoads system outperforms literature and shows potential for deployment by transport agencies.
+
+\section*{References}
+\begin{enumerate}
+    \item NSW Government. ``NSW Roads Traffic Volume Counts API.'' 2025.
+    \item NSW EPA. ``Air Quality Data Services.'' 2025.
+    \item Bureau of Meteorology. ``Climate Data Online.'' 2025.
+    \item Zhang, L. et al., *Transportation Research Part D*, 2024.
+    \item Smith, K. et al., *IEEE Trans. ITS*, 2024.
+    \item Infrastructure Australia, ``Urban Transport Crowding and Congestion,'' 2019.
+    \item Chen, T. \& Guestrin, C., ``XGBoost: A Scalable Tree Boosting System,'' 2016.
+\end{enumerate}
+
+\section*{Appendix: Technical Details}
+\begin{itemize}
+    \item Dataset: 3.9M traffic records $\rightarrow$ 327k final.
+    \item Models: kNN, Decision Tree, Random Forest, NN, XGBoost.
+    \item Features: 31 total across 5 categories.
+\end{itemize}
+
+\begin{itemize}
+\item Visualization files:
+\begin{enumerate}
+    \item congestion\_class\_distribution\_v2.png
+    \item confusion\_matrices\_v2.png
+    \item feature\_importance\_xgboost\_v2.png
+    \item feature\_importance\_random\_forest\_v2.png
+    \item report\_location\_feature\_impact.png
+    \item report\_traffic\_patterns\_analysis.png
+    \item report\_environmental\_correlations.png
+    \item report\_model\_comparison.png
+    \item report\_performance\_metrics\_table.png
+\end{enumerate}
+\end{itemize}
+
+\end{document}
